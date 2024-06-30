@@ -165,25 +165,25 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
 
+            Move();
             if (Input.GetKey(KeyCode.E))
             {
                 isHanging = true;
+                _controller.enabled = false;
                 _animator.SetBool("Hanging", true);
+                transform.position = new Vector3(target.transform.position.x,
+                                                    target.transform.position.y - hangPivot.transform.position.y, target.transform.position.z);
+                transform.rotation = new Quaternion(target.transform.rotation.x, target.transform.rotation.y, transform.rotation.z, 0f);
             }
 
             if (Input.GetKey(KeyCode.R))
             {
                 _animator.SetBool("Hanging", false);
+                _controller.enabled = true;
                 isHanging = false;
             }
 
-            if (true)
-            {
-                //transform.position = new Vector3(target.transform.position.x, target.transform.position.y + hangPivot.transform.position.y, target.transform.position.z);
-                Tr.position = new Vector3(0,0,0);
-            }
 
-            Move();
         }
 
         private void LateUpdate()

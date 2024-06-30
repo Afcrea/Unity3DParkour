@@ -15,6 +15,5 @@ public class test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Tr.position = new Vector3(0, 1, 0);
     }
 }
