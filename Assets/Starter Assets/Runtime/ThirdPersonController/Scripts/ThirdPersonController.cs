@@ -123,11 +123,6 @@ namespace StarterAssets
         }
 
 
-        Transform Tr;
-        public GameObject target;
-        public GameObject hangPivot;
-        bool isHanging = false;
-
         private void Awake()
         {
             // get a reference to our main camera
@@ -135,6 +130,7 @@ namespace StarterAssets
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
+
         }
 
         private void Start()
@@ -155,7 +151,6 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
-            Tr = GetComponent<Transform>();
         }
         
         private void Update()
@@ -166,25 +161,8 @@ namespace StarterAssets
             GroundedCheck();
 
             Move();
-            if (Input.GetKey(KeyCode.E))
-            {
-                isHanging = true;
-                _controller.enabled = false;
-                _animator.SetBool("Hanging", true);
-                transform.position = new Vector3(target.transform.position.x,
-                                                    target.transform.position.y - hangPivot.transform.position.y, target.transform.position.z);
-                transform.rotation = new Quaternion(target.transform.rotation.x, target.transform.rotation.y, transform.rotation.z, 0f);
-            }
-
-            if (Input.GetKey(KeyCode.R))
-            {
-                _animator.SetBool("Hanging", false);
-                _controller.enabled = true;
-                isHanging = false;
-            }
-
-
         }
+
 
         private void LateUpdate()
         {
