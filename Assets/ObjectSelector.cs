@@ -40,7 +40,7 @@ public class ObjectSelector : MonoBehaviour
             Vector3 screenPoint = mainCamera.WorldToScreenPoint(hitCollider.transform.position);
             float distance = Vector3.Distance(screenPoint, mousePosition);
 
-            Debug.Log("screenPoint : " + screenPoint + "\t mousePosition : " + mousePosition);
+            //Debug.Log("screenPoint : " + screenPoint + "\t mousePosition : " + mousePosition);
 
             if (distance < closestDistance)
             {
@@ -54,14 +54,14 @@ public class ObjectSelector : MonoBehaviour
             if (selectedObject != null)
             {
                 // 이전에 선택된 오브젝트의 하이라이트를 해제합니다.
-                HighlightObject(selectedObject, false);
+                //HighlightObject(selectedObject, false);
             }
 
             selectedObject = closestObject; // 가장 가까운 오브젝트를 선택
             //Debug.Log("Selected Object: " + selectedObject.name);
 
             // 선택된 오브젝트를 하이라이트합니다.
-            HighlightObject(selectedObject, true);
+            //HighlightObject(selectedObject, true);
         }
         else
         {

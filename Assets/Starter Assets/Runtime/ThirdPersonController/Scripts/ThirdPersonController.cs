@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
+using static UnityEngine.EventSystems.StandaloneInputModule;
 #endif
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
@@ -81,7 +82,8 @@ namespace StarterAssets
 
         // player
         private float _speed;
-        private float _animationBlend;
+        private float _animationBlendY;
+        private float _animationBlendX;
         private float _targetRotation = 0.0f;
         private float _rotationVelocity;
         private float _verticalVelocity;
@@ -227,11 +229,12 @@ namespace StarterAssets
 
             // a reference to the players current horizontal velocity
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
-
+            
             float speedOffset = 0.1f;
             float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
 
-            // accelerate or decelerate to target speed
+            //accelerate or decelerate to target speed
+            // 이동속도 댐프하는건데 필요없는 거같음 ..
             if (currentHorizontalSpeed < targetSpeed - speedOffset ||
                 currentHorizontalSpeed > targetSpeed + speedOffset)
             {
@@ -248,38 +251,58 @@ namespace StarterAssets
                 _speed = targetSpeed;
             }
 
-            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
-            if (_animationBlend < 0.01f) _animationBlend = 0f;
+            // 속도 레프로 결정 
+            _animationBlendX = Mathf.Lerp(_animationBlendX, targetSpeed * _input.move.x, Time.deltaTime * SpeedChangeRate);
+            if (_animationBlendX < 0.01f && _animationBlendX > -0.01f) _animationBlendX = 0f;
 
-            // normalise input direction
-            Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+            _animationBlendY = Mathf.Lerp(_animationBlendY, targetSpeed * _input.move.y, Time.deltaTime * SpeedChangeRate);
+            if (_animationBlendY < 0.01f && _animationBlendY > -0.01f) _animationBlendY = 0f;
+
+            // 인풋값 horizontal vertical 로 분리
+            Vector3 inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
 
             // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is a move input rotate player when the player is moving
-            if (_input.move != Vector2.zero)
-            {
-                _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                  _mainCamera.transform.eulerAngles.y;
-                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
+
+            //if (_input.move != Vector2.zero)
+
+            _targetRotation = Mathf.Atan2(transform.rotation.x, transform.rotation.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+            //_targetRotation = _mainCamera.transform.eulerAngles.y;
+            float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
                     RotationSmoothTime);
 
                 // rotate to face input direction relative to camera position
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
-            }
 
-
-            Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+            //Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+            Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.one;
 
             // move the player
-            _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+            _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) +
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
             // update animator if using character
-            if (_hasAnimator)
+            if (!_hasAnimator) return;
+
+            if (_input.move.x > 0.1 || _input.move.x < -0.1)
             {
-                _animator.SetFloat(_animIDSpeed, _animationBlend);
-                _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+                _animator.SetFloat("x", _animationBlendX);
             }
+            else
+            {
+                _animator.SetFloat("x", _animationBlendX);
+            }
+
+            if (_input.move.y > 0.1 || _input.move.y < -0.1)
+            {
+                _animator.SetFloat("y", _animationBlendY);
+            }
+            else
+            {
+                _animator.SetFloat("y", _animationBlendY);
+            }
+
+            _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
         }
 
         private void JumpAndGravity()

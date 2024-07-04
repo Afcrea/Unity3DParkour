@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 543791366}
   - component: {fileID: 543791365}
   - component: {fileID: 543791369}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1089,6 +1089,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 332138586}
     - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: GroundLayers.m_Bits
+      value: 193
+      objectReference: {fileID: 0}
+    - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       propertyPath: selectableLayer.m_Bits
       value: 51
       objectReference: {fileID: 0}
@@ -1265,9 +1269,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1762682267}
-    - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1762682268}
   m_SourcePrefab: {fileID: 100100000, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
 --- !u!114 &1762682259 stripped
@@ -1297,24 +1298,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3893294197879345259, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
   m_PrefabInstance: {fileID: 1762682258}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1762682267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 256858860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46af88a2f5f0e5445b4e4b8bc918a1b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainCameraObject: {fileID: 0}
-  character: {fileID: 0}
-  selectionRadius: 10
-  selectableLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &1762682268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1332,7 +1315,7 @@ MonoBehaviour:
   selectionRadius: 10
   selectableLayer:
     serializedVersion: 2
-    m_Bits: 51
+    m_Bits: 192
 --- !u!1 &1764214107
 GameObject:
   m_ObjectHideFlags: 0
