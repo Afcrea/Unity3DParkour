@@ -65,7 +65,7 @@ public class ObjectSelector : MonoBehaviour
         }
         else
         {
-            Debug.Log("No object found in range.");
+            //Debug.Log("No object found in range.");
         }
     }
 

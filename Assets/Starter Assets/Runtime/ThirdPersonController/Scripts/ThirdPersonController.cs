@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Codice.CM.Client.Differences;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 using static UnityEngine.EventSystems.StandaloneInputModule;
@@ -125,6 +126,12 @@ namespace StarterAssets
         }
 
 
+        enum State
+        {
+            normal,
+            hang,
+        }
+
         private void Awake()
         {
             // get a reference to our main camera
@@ -153,6 +160,8 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+
+
         }
         
         private void Update()
@@ -165,6 +174,10 @@ namespace StarterAssets
             Move();
         }
 
+        void Movement()
+        {
+
+        }
 
         private void LateUpdate()
         {
